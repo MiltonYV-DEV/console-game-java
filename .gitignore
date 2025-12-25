@@ -1,0 +1,43 @@
+# ===== Maven / Java build =====
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+# ===== IDEs =====
+# IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# NetBeans
+nbproject/
+nbactions.xml
+
+# VS Code
+.vscode/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== Maven wrapper (si no lo usas) =====
+# Si SÍ usas Maven Wrapper, NO ignores .mvn/ ni mvnw*
+# .mvn/
+# mvnw
+# mvnw.cmd
+
+# ===== Optional =====
+# Local env/config (si guardas secretos)
+.env
+*.local
+
