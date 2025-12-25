@@ -2,6 +2,6 @@
 
 # Comando para correr el juego
 
-'''bash
+```bash
 mvn exec:java -Dexec.mainClass="vyom.dunk.app.App"
-'''
+```
