@@ -94,6 +94,8 @@ public class Ui {
     render();
 
     while (true) {
+      clearScreen();
+      render();
       System.out.println("1)Iniciar partida");
       System.out.println("2)Continuar partida");
       System.out.println("3)Volver al menu principal");
