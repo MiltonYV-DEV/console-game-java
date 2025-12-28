@@ -1,5 +1,7 @@
 package vyom.dunk.app.models;
 
+import java.util.Random;
+
 public class Enemy {
   private final String name;
   private final int maxHp;
@@ -12,15 +14,23 @@ public class Enemy {
 
   public Enemy(String name, int maxHp, String description, String nameAttack, String[] dialogsAttacks) {
     this.name = name.trim();
-    this.maxHp = maxHp;
-    this.hp = maxHp;
+    this.maxHp = 100;
+    this.hp = 100;
     this.description = description;
     this.nameAttack = nameAttack;
     this.dialogsAttacks = dialogsAttacks;
   }
 
-  public String getNane() {
+  public String getName() {
     return name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public String getNameAttack() {
+    return nameAttack;
   }
 
   public int takeDamage(int dmg) {
@@ -30,4 +40,10 @@ public class Enemy {
     hp = Math.max(0, hp - dmg);
     return old - hp;
   }
+
+  public String randomDialogAttack(String[] dialogsAttack) {
+    Random random = new Random();
+    return dialogsAttack[random.nextInt(dialogsAttack.length)];
+  }
+
 }
