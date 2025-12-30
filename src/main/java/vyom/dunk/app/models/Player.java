@@ -2,22 +2,20 @@ package vyom.dunk.app.models;
 
 public class Player {
   private final String name;
-  private final Stats stats;
-
+  private int maxHP;
   private int hp;
-  private boolean defending;
+  private int potions;
+  private int attack;
 
-  public Player(String name, Stats stats) {
+  public Player(String name) {
     if (name == null || name.isBlank())
       throw new IllegalArgumentException("Nombre invalido");
 
-    if (stats == null)
-      throw new IllegalArgumentException("Stats no puede ser null");
-
     this.name = name;
-    this.stats = stats;
-    this.hp = stats.getMaxHp();
-    this.defending = false;
+    this.hp = 100;
+    this.maxHP = 100;
+    this.potions = 4;
+    this.attack = 10;
   }
 
   // Getters
@@ -25,24 +23,16 @@ public class Player {
     return name;
   }
 
-  public Stats getStats() {
-    return stats;
-  }
-
   public int getHp() {
     return hp;
   }
 
   public int getMaxHp() {
-    return stats.getMaxHp();
+    return this.maxHP;
   }
 
   public boolean isAlive() {
     return hp > 0;
-  }
-
-  public boolean isDefending() {
-    return defending;
   }
 
   // Turno
@@ -50,21 +40,8 @@ public class Player {
 
   }
 
-  public void endTurn() {
-    defending = false;
-  }
-
-  // acciones/estado
-  public void defend() {
-    defending = true;
-  }
-
-  public int getAttackPower() {
-    return stats.getAttack();
-  }
-
-  public int getDefensePower() {
-    return stats.getDefense();
+  public int getAttack() {
+    return this.attack;
   }
 
   // efectos
@@ -72,20 +49,10 @@ public class Player {
     if (incomingDamage < 0)
       incomingDamage = 0;
 
-    int reduced = Math.max(0, incomingDamage - getDefensePower());
+    int reduced = Math.max(0, incomingDamage);
     int oldHp = hp;
     hp = Math.max(0, hp - reduced);
 
     return oldHp - hp;
-  }
-
-  public int heal(int amount) {
-    if (amount <= 0)
-      return 0;
-
-    int oldHp = hp;
-    hp = Math.min(stats.getMaxHp(), hp + amount);
-
-    return hp - oldHp;
   }
 }

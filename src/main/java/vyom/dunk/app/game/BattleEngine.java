@@ -13,6 +13,15 @@ public class BattleEngine {
   public void start(Player player, Enemy enemy, Scanner sc) {
 
     System.out.println("\n=== COMBATE ===");
-    System.out.println(player.getName() + " vs " + enemy.getNane() + "\n");
+    System.out.println(player.getName() + " vs " + enemy.getName() + "\n");
+
+    while (player.isAlive() && enemy.isAlive()) {
+
+    }
+  }
+
+  private void printStatus(Player p, Enemy e) {
+    System.out.println("--- Estado ---");
+    System.out.println(p.getName() + ": " + p.getHp() + "/" + p.getMaxHp());
   }
 }
