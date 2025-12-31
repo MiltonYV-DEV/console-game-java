@@ -32,7 +32,7 @@ public class BattleEngine {
         }
 
         case "2" -> {
-          int healted = player.heal(10);
+          int healted = player.heal(20);
           System.out.println("Te curaste " + healted + " HP.");
         }
 
