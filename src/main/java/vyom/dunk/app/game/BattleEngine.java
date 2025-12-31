@@ -36,6 +36,26 @@ public class BattleEngine {
           System.out.println("Te curaste " + healted + " HP.");
         }
 
+        default -> {
+          System.out.println("Opcion invalida. pierdes el turno.");
+        }
+
+      }
+
+      if (!enemy.isAlive())
+        break;
+
+      // turno enemigo
+      int enemyDmg = rollDamage(10, 20);
+      player.takeDamage(enemyDmg);
+
+      System.out.println(enemy.getName() + " te hizo " + enemyDmg + " de dano.\n");
+
+      // resultado
+      if (player.isAlive()) {
+        System.out.println("Ganaste el combate");
+      } else {
+        System.out.println("Perdiste... intenta otra vez");
       }
     }
   }
