@@ -2,17 +2,25 @@ package vyom.dunk.app.ui;
 
 import java.util.Scanner;
 import java.io.Console;
+import java.io.FileReader;
+
+import vyom.dunk.app.models.Enemy;
+import vyom.dunk.app.models.Player;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import java.io.Reader;
 
 public class Ui {
-  private static String title = "Project x";
+  private static String title = "Bienvenido a Dungeon Peru";
   private static String subtitle = "";
   private static boolean isLoggin = false;
+  private static String user;
 
   static Scanner sc = new Scanner(System.in);
 
   public static void render() {
     clearScreen();
-    System.out.println("Bienenido a " + title);
+    System.out.println(title);
     if (subtitle != "")
       System.out.println(subtitle);
 
@@ -51,6 +59,8 @@ public class Ui {
 
     System.out.print("Ingrese nickname: ");
     String nick = sc.nextLine().trim();
+
+    user = nick;
 
     Console console = System.console();
 
@@ -111,5 +121,12 @@ public class Ui {
         }
       }
     }
+  }
+
+  static void battle() {
+    Player p1 = new Player(user, 100);
+
+    System.out.println("===== La batalla comenzara ====");
+
   }
 }
