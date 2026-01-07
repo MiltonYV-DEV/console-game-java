@@ -6,8 +6,6 @@ import java.io.FileReader;
 
 import vyom.dunk.app.models.Enemy;
 import vyom.dunk.app.models.Player;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
 import java.io.Reader;
 
 public class Ui {
