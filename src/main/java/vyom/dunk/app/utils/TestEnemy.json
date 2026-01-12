@@ -1,6 +1,6 @@
 {
   "name": "Pedro Castillo",
-  "description": "Pedro Castillo entra al campo de batalla con su clásico sombrero chotano, comienza un discurso improvisado sin notas y… nadie entiende nada. El enemigo queda confundido intentando descifrar el mensaje.",
+  "description_in": "Pedro Castillo entra al campo de batalla con su clásico sombrero chotano, comienza un discurso improvisado sin notas y… nadie entiende nada. Todos quedan confundidos intentando descifrar el mensaje.",
   "dialogs": [
     "Toma este mi sombrerazo confuso!",
     "No mas pobres en un pais rico!"
