@@ -6,38 +6,56 @@ target/
 *.ear
 *.log
 
-# ===== IDEs =====
-# IntelliJ
-.idea/
-*.iml
-*.iws
-*.ipr
-out/
-
-# Eclipse
-.project
-.classpath
-.settings/
-
-# NetBeans
-nbproject/
-nbactions.xml
-
-# VS Code
-.vscode/
-
 # ===== OS =====
 .DS_Store
 Thumbs.db
 
-# ===== Maven wrapper (si no lo usas) =====
-# Si SÍ usas Maven Wrapper, NO ignores .mvn/ ni mvnw*
-# .mvn/
-# mvnw
-# mvnw.cmd
-
-# ===== Optional =====
-# Local env/config (si guardas secretos)
+# ===== Environment / secrets =====
 .env
+.env.*
 *.local
+
+# ===== Python bytecode =====
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ===== Virtualenv =====
+.venv/
+venv/
+env/
+ENV/
+
+# ===== Python tooling =====
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+tox/
+.nox/
+
+# ===== Build / packaging =====
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# ===== Jupyter =====
+.ipynb_checkpoints/
+
+# ===== IDEs =====
+.vscode/
+.idea/
+*.swp
+*.swo
+
+
+# ===== Eclipse / Java IDE =====
+.classpath
+.project
+.settings/
 
