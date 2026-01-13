@@ -9,8 +9,8 @@ import vyom.dunk.app.utils.TypingText;
 public class App {
   public static void main(String[] args) throws IOException {
 
-    // Ui.home();
-    TypingText.printTest();
+    Ui.home();
+    // TypingText.printTest();
     // JsonReader.test();
   }
 }

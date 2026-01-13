@@ -6,11 +6,11 @@ import java.io.FileReader;
 
 import vyom.dunk.app.models.Enemy;
 import vyom.dunk.app.models.Player;
+import vyom.dunk.app.utils.TypingText;
+
 import java.io.Reader;
 
 public class Ui {
-  private static String title = "Bienvenido a Dungeon Peru";
-  private static String subtitle = "";
   private static boolean isLoggin = false;
   private static String user;
 
@@ -18,24 +18,19 @@ public class Ui {
 
   public static void render() {
     clearScreen();
-    System.out.println(title);
-    if (subtitle != "")
-      System.out.println(subtitle);
-
-    System.out.println();
+    // System.out.println(title);
   }
 
   public static void home() {
 
     while (true) {
       render();
-      System.out.println("1)Iniciar sesion.");
-      System.out.println("2)Registrarse.");
-      System.out.println("3)Idioma.");
-      System.out.println("4)Salir.");
+      String[] elementsHome = { "BIENVENIDO A PERUDUNGEON\n", "1)Iniciar sesion\n", "2)Registrarse\n", "3)Idioma\n",
+          "4)Salir\n", "Ingrese opcion: " };
 
-      System.out.print("Ingrese opcion: ");
-      String opt = sc.nextLine().trim();
+      TypingText.printText(elementsHome, 50);
+
+      String opt = readOpt();
 
       switch (opt) {
         case "1" -> login();
@@ -52,17 +47,16 @@ public class Ui {
 
   public static void login() {
     clearScreen();
-    subtitle = "Login";
-    render();
+    String[] elementsLogin = { "Login\n", "Ingrese su nickname: " };
 
-    System.out.print("Ingrese nickname: ");
+    TypingText.printText(elementsLogin, 50);
+
     String nick = sc.nextLine().trim();
-
-    user = nick;
 
     Console console = System.console();
 
-    console.printf("Ingrese su contrasena: ");
+    String[] elementsLoginPass = { "Ingrese contrasena: " };
+    TypingText.printText(elementsLoginPass, 50);
     char[] passwordChars = console.readPassword();
     String passwordString = new String(passwordChars);
 
@@ -77,13 +71,16 @@ public class Ui {
   public static void register() {
     Console console = System.console();
 
-    console.printf("Ingrese su nickname: ");
+    String[] registerElementNick = { "Ingrese su nickname: " };
+    TypingText.printText(registerElementNick, 50);
     String nickname = console.readLine();
 
-    console.printf("Ingrese su correo(incluir @gmail): ");
+    String[] registerElementEmail = { "Ingrese su correo(incluir @gmail): " };
+    TypingText.printText(registerElementEmail, 50);
     String email = console.readLine();
 
-    console.printf("Ingrese su contrasena");
+    String[] registerElementPass = { "Ingrese su contrasena" };
+    TypingText.printText(registerElementPass, 50);
     char[] passwordChars = console.readPassword();
     String passwordString = new String(passwordChars);
 
@@ -103,20 +100,21 @@ public class Ui {
 
     while (true) {
       clearScreen();
-      render();
-      System.out.println("1)Iniciar partida");
-      System.out.println("2)Continuar partida");
-      System.out.println("3)Volver al menu principal");
 
-      System.out.print("Ingrese opcion: ");
-      String opt = sc.nextLine().trim();
+      String[] menu2Elements = { "1)Iniciar partida\n", "2)ver ultimas partidas\n", "3)Ver ranking mundial\n",
+          "4)Volver al menu principal\n" };
+      TypingText.printText(menu2Elements, 50);
+
+      String opt = readOpt();
 
       switch (opt) {
         case "1" -> System.out.println("Iniciando partida...");
         case "2" -> System.out.println("Aun no esta disponible XD");
-        case "3" -> {
+        case "3" -> System.out.println("Cargando ranking");
+        case "4" -> {
           return;
         }
+
       }
     }
   }
@@ -126,5 +124,13 @@ public class Ui {
 
     System.out.println("===== La batalla comenzara ====");
 
+  }
+
+  static String readOpt() {
+    String[] readElement = { "Ingrese una opcion: " };
+    TypingText.printText(readElement, 50);
+    String opt = sc.nextLine().trim();
+
+    return opt;
   }
 }
