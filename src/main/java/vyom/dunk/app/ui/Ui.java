@@ -2,13 +2,8 @@ package vyom.dunk.app.ui;
 
 import java.util.Scanner;
 import java.io.Console;
-import java.io.FileReader;
-
-import vyom.dunk.app.models.Enemy;
 import vyom.dunk.app.models.Player;
 import vyom.dunk.app.utils.TypingText;
-
-import java.io.Reader;
 
 public class Ui {
   private static boolean isLoggin = false;
@@ -18,17 +13,16 @@ public class Ui {
 
   public static void render() {
     clearScreen();
-    // System.out.println(title);
   }
 
   public static void home() {
 
     while (true) {
       render();
-      String[] elementsHome = { "BIENVENIDO A PERUDUNGEON\n", "1)Iniciar sesion\n", "2)Registrarse\n", "3)Idioma\n",
-          "4)Salir\n", "Ingrese opcion: " };
+      String[] elementsHome = { "BIENVENIDO A PERUDUNGEON\n", "1)Iniciar sesion\n", "2)Registrarse\n",
+          "3)Crear usuarios ranking(test db)\n", "4)Ver ranking mundial(test db)\n", "5)Idioma\n", "6)Salir\n" };
 
-      TypingText.printText(elementsHome, 50);
+      TypingText.printText(elementsHome, 25);
 
       String opt = readOpt();
 
@@ -36,7 +30,9 @@ public class Ui {
         case "1" -> login();
         case "2" -> register();
         case "3" -> System.out.println("No hay mas idiomas disponibles XD");
-        case "4" -> {
+        case "4" -> System.out.println("No hay mas idiomas disponibles XD");
+        case "5" -> System.out.println("No hay mas idiomas disponibles XD");
+        case "6" -> {
           System.out.println("Saliendo...");
           return;
         }
@@ -49,7 +45,7 @@ public class Ui {
     clearScreen();
     String[] elementsLogin = { "Login\n", "Ingrese su nickname: " };
 
-    TypingText.printText(elementsLogin, 50);
+    TypingText.printText(elementsLogin, 25);
 
     String nick = sc.nextLine().trim();
 
@@ -88,12 +84,6 @@ public class Ui {
     console.printf(nickname + "|" + email);
   }
 
-  static void clearScreen() {
-    System.out.print("\033[H\033[2J");
-    System.out.flush();
-  }
-
-  // Si el inicio de sesion es exitoso muestra este menu
   static void menu2() {
     clearScreen();
     render();
@@ -121,7 +111,6 @@ public class Ui {
 
   static void battle() {
     Player p1 = new Player(user, 100);
-
     System.out.println("===== La batalla comenzara ====");
 
   }
@@ -132,5 +121,10 @@ public class Ui {
     String opt = sc.nextLine().trim();
 
     return opt;
+  }
+
+  static void clearScreen() {
+    System.out.print("\033[H\033[2J");
+    System.out.flush();
   }
 }
