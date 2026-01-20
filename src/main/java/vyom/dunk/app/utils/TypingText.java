@@ -19,10 +19,10 @@ public class TypingText {
     // System.out.println();
   }
 
-  public static void printText(String[] elements, int speed) {
+  public static void printText(String[] elements) {
     // String[] elements = { "YO SOY TITULO", "yo soy parrafo" };
     // long speed = 50;
 
-    slowPrint(elements, speed);
+    slowPrint(elements, 25);
   }
 }

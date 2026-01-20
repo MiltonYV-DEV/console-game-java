@@ -15,6 +15,7 @@ public class UserService {
     if (req.username() == null || req.username().isBlank()) {
       throw new IllegalArgumentException("Username requerido");
     }
+
     if (req.pass() == null || req.pass().isBlank()) {
       throw new IllegalArgumentException("Password vacio");
     }

@@ -3,26 +3,33 @@ package vyom.dunk.app.ui;
 import java.util.Scanner;
 import java.io.Console;
 import vyom.dunk.app.models.Player;
+import vyom.dunk.app.resources.UserCreateRequest;
+import vyom.dunk.app.services.UserService;
 import vyom.dunk.app.utils.TypingText;
 
 public class Ui {
-  private static boolean isLoggin = false;
-  private static String user;
+  private boolean isLoggin = false;
+  private String user;
+  private final UserService service;
 
   static Scanner sc = new Scanner(System.in);
+
+  public Ui(UserService service) {
+    this.service = service;
+  }
 
   public static void render() {
     clearScreen();
   }
 
-  public static void home() {
+  public void home() {
 
     while (true) {
       render();
       String[] elementsHome = { "BIENVENIDO A PERUDUNGEON\n", "1)Iniciar sesion\n", "2)Registrarse\n",
           "3)Crear usuarios ranking(test db)\n", "5)Idioma\n", "6)Salir\n" };
 
-      TypingText.printText(elementsHome, 25);
+      TypingText.printText(elementsHome);
 
       String opt = readOpt();
 
@@ -41,49 +48,59 @@ public class Ui {
     }
   }
 
-  public static void login() {
+  public void login() {
     clearScreen();
     String[] elementsLogin = { "Login\n", "Ingrese su nickname: " };
 
-    TypingText.printText(elementsLogin, 25);
+    TypingText.printText(elementsLogin);
 
-    String nick = sc.nextLine().trim();
+    String username = sc.nextLine().trim();
 
     Console console = System.console();
 
     String[] elementsLoginPass = { "Ingrese contrasena: " };
-    TypingText.printText(elementsLoginPass, 25);
+    TypingText.printText(elementsLoginPass);
     char[] passwordChars = console.readPassword();
     String passwordString = new String(passwordChars);
 
     console.printf(passwordString + "\n");
 
-    isLoggin = true;
+    // isLoggin = true;
 
     if (true)
       menu2();
   }
 
-  public static void register() {
+  public void register() {
+    clearScreen();
     Console console = System.console();
 
-    String[] registerElementNick = { "Ingrese su nickname: " };
-    TypingText.printText(registerElementNick, 25);
-    String nickname = console.readLine();
-
-    // String[] registerElementEmail = { "Ingrese su correo(incluir @gmail): " };
-    // TypingText.printText(registerElementEmail, 25);
-    // String email = console.readLine();
+    String[] registerElementNick = { "BIENVENIDO AL REGISTRO\n", "Ingrese su nickname: " };
+    TypingText.printText(registerElementNick);
+    String username = console.readLine();
 
     String[] registerElementPass = { "Ingrese su contrasena" };
-    TypingText.printText(registerElementPass, 25);
+    TypingText.printText(registerElementPass);
     char[] passwordChars = console.readPassword();
     String passwordString = new String(passwordChars);
 
-    console.printf("Usuario creado!");
+    try {
+      long id = service.createUser(new UserCreateRequest(username, passwordString));
+      // System.out.println("Usuario creado con id: " + id);
+      String[] registerElementUserCreated = { "Usuario creado con id: " + id + "\n" };
+      TypingText.printText(registerElementUserCreated);
+      readContinue();
+
+    } catch (Exception e) {
+      // System.out.println("Error: " + e.getMessage());
+      String[] registerElementException = { "Este username ya existe\n" };
+      TypingText.printText(registerElementException);
+      readContinue();
+    }
+
   }
 
-  static void menu2() {
+  public void menu2() {
     clearScreen();
     render();
 
@@ -92,7 +109,7 @@ public class Ui {
 
       String[] menu2Elements = { "1)Iniciar partida\n", "2)ver ultimas partidas\n", "3)Ver ranking mundial\n",
           "4)Volver al menu principal\n" };
-      TypingText.printText(menu2Elements, 25);
+      TypingText.printText(menu2Elements);
 
       String opt = readOpt();
 
@@ -108,18 +125,25 @@ public class Ui {
     }
   }
 
-  static void battle() {
-    Player p1 = new Player(user, 100);
+  public void battle() {
+    // Player p1 = new Player(this.user, 100);
     System.out.println("Contra quien quieres pelear?");
 
   }
 
-  static String readOpt() {
+  public String readOpt() {
     String[] readElement = { "Ingrese una opcion: " };
-    TypingText.printText(readElement, 25);
+    TypingText.printText(readElement);
     String opt = sc.nextLine().trim();
 
     return opt;
+  }
+
+  public String readContinue() {
+    String[] continueElement = { "Ingrese cualquier letra para continuar: " };
+    TypingText.printText(continueElement);
+    String rd = sc.nextLine().trim();
+    return rd;
   }
 
   static void clearScreen() {

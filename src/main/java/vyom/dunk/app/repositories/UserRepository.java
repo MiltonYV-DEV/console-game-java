@@ -27,19 +27,20 @@ public class UserRepository {
       }
 
     } catch (SQLException e) {
-      throw new RuntimeException("No puedo encontrarse en la db", e);
+      e.printStackTrace();
+      throw new RuntimeException("No pudo mirar en la db", e);
     }
   }
 
   public long insert(String username, String passwordHash) {
-    String sql = "INSERT INTO users (username, password_hash) VALUES (?, ?, ?,)";
+    String sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)";
 
     try (Connection con = db.getConnection();
         PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
       ps.setString(1, username);
       ps.setString(2, passwordHash);
-      ps.executeQuery();
+      ps.executeUpdate();
 
       try (ResultSet keys = ps.getGeneratedKeys()) {
         if (keys.next())
