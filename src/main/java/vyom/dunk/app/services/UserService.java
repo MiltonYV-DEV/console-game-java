@@ -1,6 +1,7 @@
 package vyom.dunk.app.services;
 
 import vyom.dunk.app.repositories.UserRepository;
+import vyom.dunk.app.resources.UserAuthData;
 import vyom.dunk.app.resources.UserCreateRequest;
 import vyom.dunk.app.utils.Password;
 
@@ -27,4 +28,24 @@ public class UserService {
     String hash = Password.hashPassword(req.pass());
     return repo.insert(req.username().trim(), hash);
   }
+
+  public String loginUser(String username, String password) {
+    if (username == null || username.isBlank()) {
+      throw new IllegalArgumentException("Username requerido");
+    }
+
+    if (password == null || password.isBlank()) {
+      throw new IllegalArgumentException("Password requerido");
+    }
+
+    UserAuthData user = repo.selectUserByUsername(username.trim())
+        .orElseThrow(() -> new IllegalArgumentException("Credenciales inválidas"));
+
+    if (!Password.checkPassword(password, user.passwordHash())) {
+      throw new IllegalArgumentException("Credenciales inválidas");
+    }
+
+    return user.username();
+  }
+
 }

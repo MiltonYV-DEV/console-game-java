@@ -1,6 +1,7 @@
 package vyom.dunk.app.ui;
 
 import java.util.Scanner;
+import java.awt.Transparency;
 import java.io.Console;
 import vyom.dunk.app.models.Player;
 import vyom.dunk.app.resources.UserCreateRequest;
@@ -50,7 +51,7 @@ public class Ui {
 
   public void login() {
     clearScreen();
-    String[] elementsLogin = { "Login\n", "Ingrese su nickname: " };
+    String[] elementsLogin = { "LOGIN\n", "Ingrese su nickname: " };
 
     TypingText.printText(elementsLogin);
 
@@ -63,12 +64,20 @@ public class Ui {
     char[] passwordChars = console.readPassword();
     String passwordString = new String(passwordChars);
 
-    console.printf(passwordString + "\n");
+    try {
+      String usernameLogin = service.loginUser(username, passwordString);
 
-    // isLoggin = true;
+      String[] elementLoginUser = { "Bienvenido aventurero " + usernameLogin + "\n", "Ojala su estadia sea larga\n" };
 
-    if (true)
+      TypingText.printText(elementLoginUser);
+
+      readContinue();
       menu2();
+    } catch (Exception e) {
+      String[] elementLoginUserError = { "Error: " + e.getMessage() + "\n" };
+      TypingText.printText(elementLoginUserError);
+      readContinue();
+    }
   }
 
   public void register() {
@@ -79,21 +88,19 @@ public class Ui {
     TypingText.printText(registerElementNick);
     String username = console.readLine();
 
-    String[] registerElementPass = { "Ingrese su contrasena" };
+    String[] registerElementPass = { "Ingrese su contraseña: " };
     TypingText.printText(registerElementPass);
     char[] passwordChars = console.readPassword();
     String passwordString = new String(passwordChars);
 
     try {
       long id = service.createUser(new UserCreateRequest(username, passwordString));
-      // System.out.println("Usuario creado con id: " + id);
       String[] registerElementUserCreated = { "Usuario creado con id: " + id + "\n" };
       TypingText.printText(registerElementUserCreated);
       readContinue();
 
     } catch (Exception e) {
-      // System.out.println("Error: " + e.getMessage());
-      String[] registerElementException = { "Este username ya existe\n" };
+      String[] registerElementException = { "Este username ya existe o ingresaste datos invalidos\n" };
       TypingText.printText(registerElementException);
       readContinue();
     }
