@@ -20,7 +20,7 @@ public class Ui {
     while (true) {
       render();
       String[] elementsHome = { "BIENVENIDO A PERUDUNGEON\n", "1)Iniciar sesion\n", "2)Registrarse\n",
-          "3)Crear usuarios ranking(test db)\n", "4)Ver ranking mundial(test db)\n", "5)Idioma\n", "6)Salir\n" };
+          "3)Crear usuarios ranking(test db)\n", "5)Idioma\n", "6)Salir\n" };
 
       TypingText.printText(elementsHome, 25);
 
@@ -52,7 +52,7 @@ public class Ui {
     Console console = System.console();
 
     String[] elementsLoginPass = { "Ingrese contrasena: " };
-    TypingText.printText(elementsLoginPass, 50);
+    TypingText.printText(elementsLoginPass, 25);
     char[] passwordChars = console.readPassword();
     String passwordString = new String(passwordChars);
 
@@ -68,15 +68,15 @@ public class Ui {
     Console console = System.console();
 
     String[] registerElementNick = { "Ingrese su nickname: " };
-    TypingText.printText(registerElementNick, 50);
+    TypingText.printText(registerElementNick, 25);
     String nickname = console.readLine();
 
     String[] registerElementEmail = { "Ingrese su correo(incluir @gmail): " };
-    TypingText.printText(registerElementEmail, 50);
+    TypingText.printText(registerElementEmail, 25);
     String email = console.readLine();
 
     String[] registerElementPass = { "Ingrese su contrasena" };
-    TypingText.printText(registerElementPass, 50);
+    TypingText.printText(registerElementPass, 25);
     char[] passwordChars = console.readPassword();
     String passwordString = new String(passwordChars);
 
@@ -93,7 +93,7 @@ public class Ui {
 
       String[] menu2Elements = { "1)Iniciar partida\n", "2)ver ultimas partidas\n", "3)Ver ranking mundial\n",
           "4)Volver al menu principal\n" };
-      TypingText.printText(menu2Elements, 50);
+      TypingText.printText(menu2Elements, 25);
 
       String opt = readOpt();
 
@@ -117,7 +117,7 @@ public class Ui {
 
   static String readOpt() {
     String[] readElement = { "Ingrese una opcion: " };
-    TypingText.printText(readElement, 50);
+    TypingText.printText(readElement, 25);
     String opt = sc.nextLine().trim();
 
     return opt;
