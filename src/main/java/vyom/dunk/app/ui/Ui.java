@@ -71,9 +71,9 @@ public class Ui {
     TypingText.printText(registerElementNick, 25);
     String nickname = console.readLine();
 
-    String[] registerElementEmail = { "Ingrese su correo(incluir @gmail): " };
-    TypingText.printText(registerElementEmail, 25);
-    String email = console.readLine();
+    // String[] registerElementEmail = { "Ingrese su correo(incluir @gmail): " };
+    // TypingText.printText(registerElementEmail, 25);
+    // String email = console.readLine();
 
     String[] registerElementPass = { "Ingrese su contrasena" };
     TypingText.printText(registerElementPass, 25);
@@ -81,7 +81,6 @@ public class Ui {
     String passwordString = new String(passwordChars);
 
     console.printf("Usuario creado!");
-    console.printf(nickname + "|" + email);
   }
 
   static void menu2() {
@@ -111,7 +110,7 @@ public class Ui {
 
   static void battle() {
     Player p1 = new Player(user, 100);
-    System.out.println("===== La batalla comenzara ====");
+    System.out.println("Contra quien quieres pelear?");
 
   }
 
