@@ -67,7 +67,7 @@ public class Ui {
     try {
       String usernameLogin = service.loginUser(username, passwordString);
 
-      String[] elementLoginUser = { "Bienvenido aventurero " + usernameLogin + "\n", "Ojala su estadia sea larga\n" };
+      String[] elementLoginUser = { "Bienvenida aventurero " + usernameLogin + "\n", "Ojala su estadia sea larga\n" };
 
       TypingText.printText(elementLoginUser);
 
