@@ -5,6 +5,7 @@ import java.io.Console;
 
 import vyom.dunk.app.resources.LoginDTO;
 import vyom.dunk.app.resources.LoginResponseDTO;
+import vyom.dunk.app.resources.ProfileDTO;
 import vyom.dunk.app.resources.RegisterDTO;
 import vyom.dunk.app.resources.RegisterResponseDTO;
 import vyom.dunk.app.services.UserService;
@@ -12,7 +13,7 @@ import vyom.dunk.app.utils.TypingText;
 
 public class Ui {
   private boolean isLoggin = false;
-  private String user;
+  private String username;
   private final UserService userService;
   long userId;
 
@@ -30,10 +31,10 @@ public class Ui {
 
     while (true) {
       render();
-      String[] elementsHome = { "BIENVENIDO A PERUDUNGEON\n", "1)Iniciar sesion\n", "2)Registrarse\n",
+      String[] homeElements = { "BIENVENIDO A PERUDUNGEON\n", "1)Iniciar sesion\n", "2)Registrarse\n",
           "3)Crear usuarios ranking(test db)\n", "5)Idioma\n", "6)Salir\n" };
 
-      TypingText.printText(elementsHome);
+      TypingText.printText(homeElements);
 
       String opt = readOpt();
 
@@ -54,7 +55,7 @@ public class Ui {
 
   public void login() {
     clearScreen();
-    String[] elementsLogin = { "LOGIN\n", "Ingrese su nickname: " };
+    String[] elementsLogin = { "LOGIN\n", "Ingrese su username: " };
 
     TypingText.printText(elementsLogin);
 
@@ -70,6 +71,8 @@ public class Ui {
     try {
       LoginDTO dto = new LoginDTO(username, passwordString);
       LoginResponseDTO res = userService.login(dto);
+      username = res.username();
+      userId = res.userId();
       String[] elementLoginUser = { "Bienvenida aventurero " + res.username() + "\n",
           "Que cada batalla de sus batallas sean legendarias!\n" };
 
@@ -102,14 +105,13 @@ public class Ui {
     String characterName = console.readLine();
 
     try {
-      // long id = userService.register(new RegisterResponseDTO(username,
-      // passwordString, characterName));
       RegisterDTO dto = new RegisterDTO(username, passwordString, characterName);
       RegisterResponseDTO res = userService.register(dto);
+
       String[] registerElementUserCreated = { "Usuario creado con id: " + res.userId() + "\n" };
       TypingText.printText(registerElementUserCreated);
-      readContinue();
 
+      readContinue();
     } catch (Exception e) {
       String[] registerElementException = { "Error: " + e + "\n" };
       TypingText.printText(registerElementException);
@@ -125,7 +127,7 @@ public class Ui {
     while (true) {
       clearScreen();
 
-      String[] menu2Elements = { "1)Iniciar partida\n", "2)ver ultimas partidas\n", "3)Ver ranking mundial\n",
+      String[] menu2Elements = { "1)Iniciar partida\n", "2)Ver perfil\n", "3)Ver ultimas partidas\n",
           "4)Volver al menu principal\n" };
       TypingText.printText(menu2Elements);
 
@@ -133,12 +135,40 @@ public class Ui {
 
       switch (opt) {
         case "1" -> System.out.println("Iniciando partida...");
-        case "2" -> System.out.println("Aun no esta disponible XD");
+        case "2" -> userProfile();
         case "3" -> System.out.println("Cargando ranking");
         case "4" -> {
           return;
         }
       }
+    }
+  }
+
+  public void userProfile() {
+    clearScreen();
+    render();
+
+    try {
+      ProfileDTO p = userService.getProfile(userId);
+
+      String[] userProfileElements = {
+          "PERFIL\n",
+          "Usuario: " + p.username() + " (ID: " + p.userId() + ")" + "\n",
+          "Personaje: " + p.characterName() + " (ID: " + p.characterId() + ")" + "\n",
+          "Nivel: " + p.level() + "\n",
+          "HP: " + p.hp() + "\n",
+          "ATK: " + p.attack() + "\n",
+          "DEF: " + p.defense() + "\n"
+      };
+
+      TypingText.printText(userProfileElements);
+
+      readContinue();
+    } catch (Exception e) {
+      String[] userProfileError = { "Error: " + e.getMessage() + "\n" };
+      TypingText.printText(userProfileError);
+
+      readContinue();
     }
   }
 

@@ -8,6 +8,7 @@ import vyom.dunk.app.repositories.CharacterRepository;
 import vyom.dunk.app.repositories.UserRepository;
 import vyom.dunk.app.resources.LoginDTO;
 import vyom.dunk.app.resources.LoginResponseDTO;
+import vyom.dunk.app.resources.ProfileDTO;
 import vyom.dunk.app.resources.RegisterDTO;
 import vyom.dunk.app.resources.RegisterResponseDTO;
 import vyom.dunk.app.resources.UserAuthData;
@@ -85,6 +86,13 @@ public class UserService {
         throw new IllegalArgumentException("Credenciales inválidas");
 
       return new LoginResponseDTO(user.id(), user.username());
+    }
+  }
+
+  public ProfileDTO getProfile(long userId) throws SQLException {
+    try (Connection conn = db.getConnection()) {
+      return charRepo.selectProfileById(conn, userId)
+          .orElseThrow(() -> new IllegalArgumentException("No se encontró perfin para este id"));
     }
   }
 }
