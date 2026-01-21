@@ -1,22 +1,25 @@
 package vyom.dunk.app.ui;
 
 import java.util.Scanner;
-import java.awt.Transparency;
 import java.io.Console;
-import vyom.dunk.app.models.Player;
-import vyom.dunk.app.resources.UserCreateRequest;
+
+import vyom.dunk.app.resources.LoginDTO;
+import vyom.dunk.app.resources.LoginResponseDTO;
+import vyom.dunk.app.resources.RegisterDTO;
+import vyom.dunk.app.resources.RegisterResponseDTO;
 import vyom.dunk.app.services.UserService;
 import vyom.dunk.app.utils.TypingText;
 
 public class Ui {
   private boolean isLoggin = false;
   private String user;
-  private final UserService service;
+  private final UserService userService;
+  long userId;
 
   static Scanner sc = new Scanner(System.in);
 
-  public Ui(UserService service) {
-    this.service = service;
+  public Ui(UserService userService) {
+    this.userService = userService;
   }
 
   public static void render() {
@@ -65,9 +68,10 @@ public class Ui {
     String passwordString = new String(passwordChars);
 
     try {
-      String usernameLogin = service.loginUser(username, passwordString);
-
-      String[] elementLoginUser = { "Bienvenida aventurero " + usernameLogin + "\n", "Ojala su estadia sea larga\n" };
+      LoginDTO dto = new LoginDTO(username, passwordString);
+      LoginResponseDTO res = userService.login(dto);
+      String[] elementLoginUser = { "Bienvenida aventurero " + res.username() + "\n",
+          "Que cada batalla de sus batallas sean legendarias!\n" };
 
       TypingText.printText(elementLoginUser);
 
@@ -93,14 +97,21 @@ public class Ui {
     char[] passwordChars = console.readPassword();
     String passwordString = new String(passwordChars);
 
+    String[] registerElementCharacter = { "Ingrese nombre de su personaje;" };
+    TypingText.printText(registerElementCharacter);
+    String characterName = console.readLine();
+
     try {
-      long id = service.createUser(new UserCreateRequest(username, passwordString));
-      String[] registerElementUserCreated = { "Usuario creado con id: " + id + "\n" };
+      // long id = userService.register(new RegisterResponseDTO(username,
+      // passwordString, characterName));
+      RegisterDTO dto = new RegisterDTO(username, passwordString, characterName);
+      RegisterResponseDTO res = userService.register(dto);
+      String[] registerElementUserCreated = { "Usuario creado con id: " + res.userId() + "\n" };
       TypingText.printText(registerElementUserCreated);
       readContinue();
 
     } catch (Exception e) {
-      String[] registerElementException = { "Este username ya existe o ingresaste datos invalidos\n" };
+      String[] registerElementException = { "Error: " + e + "\n" };
       TypingText.printText(registerElementException);
       readContinue();
     }
@@ -127,7 +138,6 @@ public class Ui {
         case "4" -> {
           return;
         }
-
       }
     }
   }

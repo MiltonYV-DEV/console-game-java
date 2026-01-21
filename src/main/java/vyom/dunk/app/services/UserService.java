@@ -1,51 +1,90 @@
 package vyom.dunk.app.services;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import vyom.dunk.app.config.Database;
+import vyom.dunk.app.repositories.CharacterRepository;
 import vyom.dunk.app.repositories.UserRepository;
+import vyom.dunk.app.resources.LoginDTO;
+import vyom.dunk.app.resources.LoginResponseDTO;
+import vyom.dunk.app.resources.RegisterDTO;
+import vyom.dunk.app.resources.RegisterResponseDTO;
 import vyom.dunk.app.resources.UserAuthData;
-import vyom.dunk.app.resources.UserCreateRequest;
 import vyom.dunk.app.utils.Password;
 
 public class UserService {
-  private final UserRepository repo;
+  private final Database db;
+  private final UserRepository userRepo;
+  private final CharacterRepository charRepo;
 
-  public UserService(UserRepository repo) {
-    this.repo = repo;
+  public UserService(Database db, UserRepository userRepo, CharacterRepository charRepo) {
+    this.db = db;
+    this.userRepo = userRepo;
+    this.charRepo = charRepo;
   }
 
-  public long createUser(UserCreateRequest req) {
-    if (req.username() == null || req.username().isBlank()) {
+  public RegisterResponseDTO register(RegisterDTO req) throws SQLException {
+    if (req.username() == null || req.username().isBlank())
       throw new IllegalArgumentException("Username requerido");
-    }
 
-    if (req.pass() == null || req.pass().isBlank()) {
-      throw new IllegalArgumentException("Password vacio");
-    }
-
-    if (repo.existsByUsername(req.username())) {
-      throw new IllegalArgumentException("Este username ya esta registrado");
-    }
-
-    String hash = Password.hashPassword(req.pass());
-    return repo.insert(req.username().trim(), hash);
-  }
-
-  public String loginUser(String username, String password) {
-    if (username == null || username.isBlank()) {
-      throw new IllegalArgumentException("Username requerido");
-    }
-
-    if (password == null || password.isBlank()) {
+    if (req.password() == null || req.password().isBlank())
       throw new IllegalArgumentException("Password requerido");
+
+    String username = req.username().trim();
+    String characterName = (req.characterName() == null || req.characterName().isBlank() ? username
+        : req.characterName().trim());
+
+    try (Connection conn = db.getConnection()) {
+      boolean oldAuto = conn.getAutoCommit();
+      conn.setAutoCommit(false);
+
+      try {
+        if (userRepo.existsByUsername(conn, username))
+          throw new IllegalArgumentException("Este username ya existe");
+
+        String hash = Password.hashPassword(req.password());
+        long userId = userRepo.insert(conn, username, hash);
+        long characterId = charRepo.insertDefault(conn, userId, characterName);
+
+        conn.commit();
+
+        return new RegisterResponseDTO(userId, characterId, username);
+
+      } catch (Exception e) {
+        conn.rollback();
+
+        if (e instanceof IllegalArgumentException)
+          throw (IllegalArgumentException) e;
+
+        if (e instanceof SQLException)
+          throw (SQLException) e;
+
+        throw new SQLException("Error en el registro", e);
+
+      } finally {
+        conn.setAutoCommit(oldAuto);
+      }
     }
-
-    UserAuthData user = repo.selectUserByUsername(username.trim())
-        .orElseThrow(() -> new IllegalArgumentException("Credenciales inválidas"));
-
-    if (!Password.checkPassword(password, user.passwordHash())) {
-      throw new IllegalArgumentException("Credenciales inválidas");
-    }
-
-    return user.username();
   }
 
+  public LoginResponseDTO login(LoginDTO req) throws SQLException {
+    if (req.username() == null || req.username().isBlank())
+      throw new IllegalArgumentException("Username es requerido");
+
+    if (req.password() == null || req.password().isBlank())
+      throw new IllegalArgumentException("Password es requerido");
+
+    String username = req.username();
+
+    try (Connection conn = db.getConnection()) {
+      UserAuthData user = userRepo.selectAuthByUsername(conn, username)
+          .orElseThrow(() -> new IllegalArgumentException("Credenciales inválidas"));
+
+      if (!Password.checkPassword(req.password(), user.passwordHash()))
+        throw new IllegalArgumentException("Credenciales inválidas");
+
+      return new LoginResponseDTO(user.id(), user.username());
+    }
+  }
 }
