@@ -1,0 +1,42 @@
+{
+  "enemy": {
+    "name": "Alberto Fujimori",
+    "alias": "El Ex-Presidente Choclo",
+    "description": "Alberto Fujimori entra al campo de batalla con una mirada desafiante, su cabello alborotado como si hubiera salido de una televisión pública. Viste un traje poco elegante y una corbata que parece sacada de un mercadillo. Con una mano, se ajusta la corbata, mientras que con la otra empuña un viejo control remoto, dispuesto a defender su legado.",
+    "opening_dialogue": "¿¡Qué haces aquí!? ¡Bastante ruido hace esta pelea, más que en mis días como presidente!"
+  },
+  "enemy_attacks": [
+    {
+      "name": "Discurso Interruptor",
+      "damage": 15,
+      "description": "Fujimori lanza un discurso completo sobre sus logros mientras te golpea con su control remoto."
+    },
+    {
+      "name": "Fuga de Responsabilidad",
+      "damage": 20,
+      "description": "Se desliza ágilmente por la arena, dejándote viendo como se escapa de todas sus promesas políticas."
+    },
+    {
+      "name": "Reestructuración Económica",
+      "damage": 25,
+      "description": "Saca un gráfico de sus 'logros' y te golpea con estadísticas que no pueden ser refutadas."
+    }
+  ],
+  "player_attacks": [
+    {
+      "name": "Memes de la Doble Hasta",
+      "damage": 10,
+      "description": "Lanzas un meme sobre su época de presidente que lo deja tan confundido que no puede evitar recibir el golpe."
+    },
+    {
+      "name": "¿Dónde Está mi Plazo?",
+      "damage": 15,
+      "description": "Gritas esta consignia en alusión a su huida, y su desesperación lo golpea como si fuera un tsunami."
+    },
+    {
+      "name": "Promesas de Cambio",
+      "damage": 20,
+      "description": "Un ataque que lanza una retahíla de promesas incumplidas que lo aturden, haciéndolo más vulnerable."
+    }
+  ]
+}

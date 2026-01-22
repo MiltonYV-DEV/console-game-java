@@ -2,12 +2,15 @@ package vyom.dunk.app.ui;
 
 import java.util.Scanner;
 import java.io.Console;
+import java.sql.Connection;
 
 import vyom.dunk.app.resources.LoginDTO;
 import vyom.dunk.app.resources.LoginResponseDTO;
+import vyom.dunk.app.resources.MatchFinishDTO;
 import vyom.dunk.app.resources.ProfileDTO;
 import vyom.dunk.app.resources.RegisterDTO;
 import vyom.dunk.app.resources.RegisterResponseDTO;
+import vyom.dunk.app.services.MatchService;
 import vyom.dunk.app.services.UserService;
 import vyom.dunk.app.utils.TypingText;
 
@@ -15,12 +18,14 @@ public class Ui {
   private boolean isLoggin = false;
   private String username;
   private final UserService userService;
+  private final MatchService matchService;
   long userId;
 
   static Scanner sc = new Scanner(System.in);
 
-  public Ui(UserService userService) {
+  public Ui(UserService userService, MatchService matchService) {
     this.userService = userService;
+    this.matchService = matchService;
   }
 
   public static void render() {
@@ -73,9 +78,10 @@ public class Ui {
       LoginResponseDTO res = userService.login(dto);
       username = res.username();
       userId = res.userId();
-      String[] elementLoginUser = { "Bienvenida aventurero " + res.username() + "\n",
-          "Que cada batalla de sus batallas sean legendarias!\n" };
+      String[] elementLoginUser = { "Bienvenido aventurero " + res.username() + "\n",
+          "Que cada una de tus batallas sean legendarias!\n" };
 
+      clearScreen();
       TypingText.printText(elementLoginUser);
 
       readContinue();
@@ -100,7 +106,7 @@ public class Ui {
     char[] passwordChars = console.readPassword();
     String passwordString = new String(passwordChars);
 
-    String[] registerElementCharacter = { "Ingrese nombre de su personaje;" };
+    String[] registerElementCharacter = { "Ingrese nombre de su personaje: " };
     TypingText.printText(registerElementCharacter);
     String characterName = console.readLine();
 
@@ -172,10 +178,27 @@ public class Ui {
     }
   }
 
-  public void battle() {
-    // Player p1 = new Player(this.user, 100);
-    System.out.println("Contra quien quieres pelear?");
+  public void startMatch(long userId) {
+    try {
+      var start = matchService.startMatch(userId);
+      long matchId = start.matchId();
 
+      System.out.println("Partida iniciada. matchId=" + matchId);
+
+      // TEST
+      int turns = 3;
+      String result = "WIN";
+      int xp = 15;
+
+      matchService.finishMatch(matchId, new MatchFinishDTO(result, turns, xp));
+
+      System.out.println("Partida finalizada: " + result + " | turnos=" + turns + " | xp=" + xp);
+
+      readContinue();
+
+    } catch (Exception e) {
+      System.out.println("Error en iniciar partida: " + e.getMessage());
+    }
   }
 
   public String readOpt() {

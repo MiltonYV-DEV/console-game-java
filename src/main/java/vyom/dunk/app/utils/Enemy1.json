@@ -1,0 +1,42 @@
+{
+  "enemy": {
+    "name": "Alan García",
+    "alias": "El Cabezón Destrozador",
+    "description": "Entrando en la escena con una chaqueta sospechosamente brillante y una sonrisa seductora, Alan García se acomoda la corbata mientras murmura: 'Hoja de ruta, hoja de ruta...'. A medida que avanza, palpita la emoción, como si fuera a explicar su plan económico. De repente, suelta un grito que parece un eco perdido: '¡Que empiece la pelea, pero que sea en un programa de televisión!'. Todos se preguntan si su estrategia finalmente dará resultados.",
+    "opening_dialogue": "¡¿Qué pasa, joven?! ¡Llegaste justo a tiempo para un debate!"
+  },
+  "enemy_attacks": [
+    {
+      "name": "Promesa de Reforma",
+      "damage": 15,
+      "description": "Un golpe directo con un proyecto de ley que nadie quería, pero todos siguen debatiendo."
+    },
+    {
+      "name": "Discurso Ilusorio",
+      "damage": 20,
+      "description": "Alan comienza a hablar de sus grandes logros con tanta pasión que te deja aturdido."
+    },
+    {
+      "name": "Cero Supervisión",
+      "damage": 25,
+      "description": "Un ataque desastroso donde asegura que todos se encargan del trabajo y nadie lo supervisa: ¡impactante!"
+    }
+  ],
+  "player_attacks": [
+    {
+      "name": "Día de la No-Corrupción",
+      "damage": 10,
+      "description": "Recuerdas ese día que prometió que todo estaba limpio... ¡ja, qué risa!"
+    },
+    {
+      "name": "El Caso Olvidado",
+      "damage": 15,
+      "description": "Mencionas ese escándalo que todo el mundo olvida, pero que le hace cambiar de color."
+    },
+    {
+      "name": "La Entrevista Chusca",
+      "damage": 20,
+      "description": "Le lanzas el meme de la entrevista donde se enreda con las palabras y te ríes a carcajadas."
+    }
+  ]
+}

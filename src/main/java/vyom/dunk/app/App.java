@@ -4,7 +4,9 @@ import java.io.IOException;
 
 import vyom.dunk.app.config.Database;
 import vyom.dunk.app.repositories.CharacterRepository;
+import vyom.dunk.app.repositories.MatchRepository;
 import vyom.dunk.app.repositories.UserRepository;
+import vyom.dunk.app.services.MatchService;
 import vyom.dunk.app.services.UserService;
 import vyom.dunk.app.ui.Ui;
 
@@ -17,7 +19,10 @@ public class App {
     CharacterRepository charRepo = new CharacterRepository();
     UserService userService = new UserService(db, userRepo, charRepo);
 
-    Ui ui = new Ui(userService);
+    MatchRepository matchRepo = new MatchRepository();
+    MatchService matchService = new MatchService(db, matchRepo);
+
+    Ui ui = new Ui(userService, matchService);
 
     ui.home();
   }

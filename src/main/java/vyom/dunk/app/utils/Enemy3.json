@@ -1,0 +1,42 @@
+{
+  "enemy": {
+    "name": "Pedro Castillo",
+    "alias": "El Maestro de la Inconsistencia",
+    "description": "Con un sombrero ancho y una actitud desafiante, Pedro Castillo entra al campo de batalla. Su presencia es tan fuerte que los papeles volantes de su campaña parecen retroceder. Con un toque de una pizarra y un gesto dramático, comienza el combate, prometiendo cambios que nunca llegan.",
+    "opening_dialogue": "¡Aquí estoy para hacer historia, pero primero, una canción!"
+  },
+  "enemy_attacks": [
+    {
+      "name": "Promesa Vacía",
+      "damage": 15,
+      "description": "Un discurso grandilocuente que no lleva a ningún lado, pero causa decepción."
+    },
+    {
+      "name": "Giro del Destino",
+      "damage": 20,
+      "description": "Un inesperado cambio de dirección que sorprende y daña a su oponente."
+    },
+    {
+      "name": "La Playlist de la Oposición",
+      "damage": 25,
+      "description": "Reproduce una muchedumbre de críticas, golpeando con la fuerza de sus detractores."
+    }
+  ],
+  "player_attacks": [
+    {
+      "name": "Danza de la Confusión",
+      "damage": 10,
+      "description": "Un baile ridículo que hace tambalear a Pedro, dejándolo vulnerable."
+    },
+    {
+      "name": "Eslabon Perdido",
+      "damage": 20,
+      "description": "Mencionar el eslabón perdido de su campaña hace que se sienta más frágil."
+    },
+    {
+      "name": "Chiste de Verano",
+      "damage": 25,
+      "description": "Un meme viral sobre él que causa risa y, por ende, el daño más alto."
+    }
+  ]
+}
