@@ -9,6 +9,7 @@ import java.io.Console;
 import java.lang.ProcessBuilder.Redirect;
 import java.sql.Connection;
 
+import vyom.dunk.app.clients.EnemyMicroserviceClient;
 import vyom.dunk.app.game.BattleEngine;
 import vyom.dunk.app.resources.CombatStats;
 import vyom.dunk.app.resources.EnemyPayload;
@@ -34,17 +35,19 @@ public class Ui {
   private final BattleEngine battleEngine = new BattleEngine();
   private final GameService gameService;
   private final HistoryService historyService;
+  private final EnemyMicroserviceClient enemyClient;
   long userId;
 
   static final Scanner sc = new Scanner(System.in);
   Console console = System.console();
 
   public Ui(UserService userService, MatchService matchService, GameService gameService,
-      HistoryService historyService) {
+      HistoryService historyService, EnemyMicroserviceClient enemyClient) {
     this.userService = userService;
     this.matchService = matchService;
     this.gameService = gameService;
     this.historyService = historyService;
+    this.enemyClient = enemyClient;
   }
 
   public static void render() {
@@ -204,9 +207,10 @@ public class Ui {
 
       String prompt = sc.nextLine().trim();
 
-      String enemyJson = getSampleEnemyJson();
+      String[] loading = { "\nLOADING...\n", "Tu enememigo se esta creado..." };
+      TypingText.printText(loading);
 
-      gameService.playMatch(userId, prompt, enemyJson, sc);
+      gameService.playMatch(userId, prompt, sc);
 
     } catch (Exception e) {
       String[] errorStartMatch = { "Error: " + e.getMessage() + "\n" };

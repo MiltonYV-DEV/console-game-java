@@ -2,6 +2,7 @@ package vyom.dunk.app.services;
 
 import java.sql.Connection;
 
+import vyom.dunk.app.clients.EnemyMicroserviceClient;
 import vyom.dunk.app.config.Database;
 import vyom.dunk.app.game.BattleEngine;
 import vyom.dunk.app.repositories.BattleRepository;
@@ -25,19 +26,22 @@ public class GameService {
   private final StatBalancer statBalancer = new StatBalancer();
   private final BattleEngine battleEngine = new BattleEngine();
 
+  private final EnemyMicroserviceClient enemyClient;
+
   public GameService(Database db,
       MatchRepository matchRepo,
       GeneratedEnemyRepository genRepo,
       BattleRepository battleRepo,
-      CharacterRepository characterRepo) {
+      CharacterRepository characterRepo, EnemyMicroserviceClient enemyClient) {
     this.db = db;
     this.matchRepo = matchRepo;
     this.genRepo = genRepo;
     this.battleRepo = battleRepo;
     this.characterRepo = characterRepo;
+    this.enemyClient = enemyClient;
   }
 
-  public void playMatch(long userId, String promptUserText, String enemyJson, java.util.Scanner sc) throws Exception {
+  public void playMatch(long userId, String promptUserText, java.util.Scanner sc) throws Exception {
     try (Connection conn = db.getConnection()) {
       boolean old = conn.getAutoCommit();
       conn.setAutoCommit(false);
@@ -52,6 +56,7 @@ public class GameService {
 
         CombatStats playerStats = new CombatStats(profile.hp(), profile.attack(), profile.attack());
 
+        String enemyJson = enemyClient.generateEnemyJson(promptUserText);
         EnemyPayload payload = JsonUtil.parseEnemyPayload(enemyJson);
 
         CombatStats enemyStats = statBalancer.enemyFromPlayer(playerStats);

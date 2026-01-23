@@ -13,7 +13,7 @@ class EnemyInfo(BaseModel):
   opening_dialogue: str = Field(..., min_length=1)
 
 class GenerateEnemyRequest(BaseModel):
-  enemy_input: str = Field(..., min_length=1, max_length=120)
+  prompt_user: str = Field(..., min_length=1, max_length=120)
   min_damage: int = Field(10, ge=2, le=999)
   max_damage: int = Field(25, ge=2, le=999)
   force_super_strongest: bool = True
