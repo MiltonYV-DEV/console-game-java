@@ -28,7 +28,7 @@ public class EnemyMicroserviceClient {
       }
 
       Map<String, Object> body = Map.of(
-          "enemy_input", userText,
+          "prompt_user", userText,
           "min_damage", 10,
           "max_damage", 25);
       String payload = mapper.writeValueAsString(body);
