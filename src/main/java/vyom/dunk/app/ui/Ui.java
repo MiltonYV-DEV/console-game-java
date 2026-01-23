@@ -58,7 +58,8 @@ public class Ui {
 
     while (true) {
       render();
-      String[] homeElements = { "BIENVENIDO A PERUDUNGEON\n", "1)Iniciar sesion\n", "2)Registrarse\n",
+      String[] homeElements = { "BIENVENIDO A YOUBATTLE\n", "Version beta 0.5\n\n", "1)Iniciar sesion\n",
+          "2)Registrarse\n",
           "3)Crear usuarios ranking(test db)\n", "5)Idioma\n", "6)Salir\n" };
 
       TypingText.printText(homeElements);
