@@ -12,6 +12,16 @@ mvn exec:java -Dexec.mainClass="vyom.dunk.app.App"
 mvn exec:java "-Dexec.mainClass=vyom.dunk.app.App"
 ```
 
+# Comando windows para activar venv
+
+```bash
+.\.venv\Scripts\Activate.ps1
+```
+
+```
+
+```
+
 # Comando python
 
 ```bash
