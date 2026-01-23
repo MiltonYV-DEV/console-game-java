@@ -3,9 +3,14 @@ package vyom.dunk.app;
 import java.io.IOException;
 
 import vyom.dunk.app.config.Database;
+import vyom.dunk.app.repositories.BattleRepository;
 import vyom.dunk.app.repositories.CharacterRepository;
+import vyom.dunk.app.repositories.GeneratedEnemyRepository;
+import vyom.dunk.app.repositories.HistoryRepository;
 import vyom.dunk.app.repositories.MatchRepository;
 import vyom.dunk.app.repositories.UserRepository;
+import vyom.dunk.app.services.GameService;
+import vyom.dunk.app.services.HistoryService;
 import vyom.dunk.app.services.MatchService;
 import vyom.dunk.app.services.UserService;
 import vyom.dunk.app.ui.Ui;
@@ -17,12 +22,18 @@ public class App {
 
     UserRepository userRepo = new UserRepository();
     CharacterRepository charRepo = new CharacterRepository();
-    UserService userService = new UserService(db, userRepo, charRepo);
-
+    GeneratedEnemyRepository genRepo = new GeneratedEnemyRepository();
+    BattleRepository battleRepo = new BattleRepository();
+    CharacterRepository characterRepo = new CharacterRepository();
+    HistoryRepository historyRepo = new HistoryRepository();
     MatchRepository matchRepo = new MatchRepository();
-    MatchService matchService = new MatchService(db, matchRepo);
 
-    Ui ui = new Ui(userService, matchService);
+    UserService userService = new UserService(db, userRepo, charRepo);
+    MatchService matchService = new MatchService(db, matchRepo);
+    GameService gameService = new GameService(db, matchRepo, genRepo, battleRepo, characterRepo);
+    HistoryService historyService = new HistoryService(db, historyRepo);
+
+    Ui ui = new Ui(userService, matchService, gameService, historyService);
 
     ui.home();
   }

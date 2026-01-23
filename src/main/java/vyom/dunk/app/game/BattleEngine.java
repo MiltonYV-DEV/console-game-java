@@ -83,8 +83,8 @@ public class BattleEngine {
     int xp = result.equals("WIN") ? 20 : 5;
 
     String[] resultFight = {
-        "RESULTADO" + "\n",
-        "| Turnos: " + turns + " | Daño hecho: " + damageDealt + " | Daño recibido: " + damageTaken + "\n"
+        "\nRESULTADO" + "\n",
+        "| Turnos: " + turns + " | Daño hecho: " + damageDealt + " | Daño recibido: " + damageTaken + "\n\n"
     };
 
     TypingText.printText(resultFight);

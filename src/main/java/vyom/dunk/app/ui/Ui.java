@@ -1,6 +1,10 @@
 package vyom.dunk.app.ui;
 
 import java.util.Scanner;
+
+import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
+
+import java.awt.Transparency;
 import java.io.Console;
 import java.lang.ProcessBuilder.Redirect;
 import java.sql.Connection;
@@ -14,6 +18,8 @@ import vyom.dunk.app.resources.MatchFinishDTO;
 import vyom.dunk.app.resources.ProfileDTO;
 import vyom.dunk.app.resources.RegisterDTO;
 import vyom.dunk.app.resources.RegisterResponseDTO;
+import vyom.dunk.app.services.GameService;
+import vyom.dunk.app.services.HistoryService;
 import vyom.dunk.app.services.MatchService;
 import vyom.dunk.app.services.StatBalancer;
 import vyom.dunk.app.services.UserService;
@@ -26,13 +32,19 @@ public class Ui {
   private final MatchService matchService;
   private final StatBalancer statBalancer = new StatBalancer();
   private final BattleEngine battleEngine = new BattleEngine();
+  private final GameService gameService;
+  private final HistoryService historyService;
   long userId;
 
-  static Scanner sc = new Scanner(System.in);
+  static final Scanner sc = new Scanner(System.in);
+  Console console = System.console();
 
-  public Ui(UserService userService, MatchService matchService) {
+  public Ui(UserService userService, MatchService matchService, GameService gameService,
+      HistoryService historyService) {
     this.userService = userService;
     this.matchService = matchService;
+    this.gameService = gameService;
+    this.historyService = historyService;
   }
 
   public static void render() {
@@ -58,6 +70,8 @@ public class Ui {
         case "5" -> System.out.println("No hay mas idiomas disponibles XD");
         case "6" -> {
           System.out.println("Saliendo...");
+          sc.close();
+          shutdownMySqlCleanup();
           return;
         }
         default -> System.out.println("Dato incorrecto, vuelva a intentar");
@@ -73,8 +87,6 @@ public class Ui {
 
     String username = sc.nextLine().trim();
 
-    Console console = System.console();
-
     String[] elementsLoginPass = { "Ingrese contrasena: " };
     TypingText.printText(elementsLoginPass);
     char[] passwordChars = console.readPassword();
@@ -85,8 +97,8 @@ public class Ui {
       LoginResponseDTO res = userService.login(dto);
       username = res.username();
       userId = res.userId();
-      String[] elementLoginUser = { "Bienvenido aventurero " + res.username() + "\n",
-          "Que cada una de tus batallas sean legendarias!\n" };
+      String[] elementLoginUser = { "Bienvenid@ aventurer@ " + res.username() + "\n",
+          "Que cada una de tus batallas sea legendaria!\n" };
 
       clearScreen();
       TypingText.printText(elementLoginUser);
@@ -102,7 +114,6 @@ public class Ui {
 
   public void register() {
     clearScreen();
-    Console console = System.console();
 
     String[] registerElementNick = { "BIENVENIDO AL REGISTRO\n", "Ingrese su nickname: " };
     TypingText.printText(registerElementNick);
@@ -149,7 +160,7 @@ public class Ui {
       switch (opt) {
         case "1" -> startMatch(userId);
         case "2" -> userProfile();
-        case "3" -> System.out.println("Cargando ranking");
+        case "3" -> viewHistory(userId);
         case "4" -> {
           return;
         }
@@ -186,47 +197,57 @@ public class Ui {
   }
 
   public void startMatch(long userId) {
-    long matchId = -1;
-
+    clearScreen();
     try {
-      var start = matchService.startMatch(userId);
-      matchId = start.matchId();
+      String[] startMatchText = { "¿Contra quién quieres pelear?\n" };
+      TypingText.printText(startMatchText);
 
-      String[] startMatchElement = { "Partida iniciada. matchId=" + matchId + "\n" };
-      TypingText.printText(startMatchElement);
+      String prompt = sc.nextLine().trim();
 
-      var profile = userService.getProfile(userId);
+      String enemyJson = getSampleEnemyJson();
 
-      CombatStats playerStats = new CombatStats(
-          profile.hp(), profile.attack(), profile.defense());
+      gameService.playMatch(userId, prompt, enemyJson, sc);
 
-      String json = getSampleEnemyJson();
-      EnemyPayload payload = vyom.dunk.app.utils.JsonUtil.parseEnemyPayload(json);
-
-      CombatStats enemyStats = statBalancer.enemyFromPlayer(playerStats);
-
-      var battleResult = battleEngine.fight(sc, playerStats, enemyStats, payload);
-
-      matchService.finishMatch(matchId, new MatchFinishDTO(
-          battleResult.result(),
-          battleResult.turns(),
-          battleResult.xpGained()));
-
-      String[] matchInDb = { "Match guardado en DB, resultado: " + battleResult.result() + "\n" };
-
-      TypingText.printText(matchInDb);
     } catch (Exception e) {
-      String[] errorMatch = { "Error en la partida: " + e.getMessage() };
-      TypingText.printText(errorMatch);
+      String[] errorStartMatch = { "Error: " + e.getMessage() + "\n" };
+      TypingText.printText(errorStartMatch);
+    }
 
-      if (matchId != -1) {
-        try {
-          matchService.finishMatch(matchId, new MatchFinishDTO("ABANDONED", 0, 0));
+    readContinue();
+  }
 
-          String[] abandoned = { "Match marcado como ABANDONED" + "\n" };
-        } catch (Exception ignored) {
-        }
+  private void viewHistory(long userId) {
+    clearScreen();
+    try {
+      var list = historyService.getLastMatches(userId, 5);
+
+      String[] viewHistorytitle = { "HISTORIAL" + "(últimas 5)" + "\n",
+          "---------------------------------\n",
+      };
+      TypingText.printText(viewHistorytitle);
+
+      if (list.isEmpty()) {
+        String[] viewHisoryEmpty = { "No tienes partidas registradas." + "\n" };
+        return;
       }
+
+      for (var row : list) {
+        String enemy = (row.enemyName() == null) ? "N/A" : row.enemyName();
+        String ended = (row.endedAt() == null) ? "EN CURSO" : row.endedAt().toString();
+
+        String[] historyList = {
+            "Match_id: " + row.matchId() + " | " + row.startedAt() + " -> " + row.endedAt() + "\n",
+            "Resultado: " + row.result() + " | Turnos: " + row.totalTurns() + " | XP: +" + row.xpGained() + "\n",
+            "Enemigo: " + enemy + "\n",
+            "Daño hecho: " + row.damageDealt() + " | Daño recibido: " + row.damageTaken() + "\n",
+            "---------------------------------\n"
+        };
+
+        TypingText.printText(historyList);
+      }
+    } catch (Exception e) {
+      String[] errorViewHistory = { "Error mostando historial: " + e.getMessage() };
+      TypingText.printText(errorViewHistory);
     }
 
     readContinue();
@@ -290,12 +311,20 @@ public class Ui {
   public static String readContinue() {
     String[] continueElement = { "Ingrese cualquier letra para continuar: " };
     TypingText.printText(continueElement);
-    String rd = sc.nextLine().trim();
-    return rd;
+
+    String rc = sc.nextLine().trim();
+    return rc;
   }
 
   public static void clearScreen() {
     System.out.print("\033[H\033[2J");
     System.out.flush();
+  }
+
+  public static void shutdownMySqlCleanup() {
+    try {
+      AbandonedConnectionCleanupThread.checkedShutdown();
+    } catch (Exception ignored) {
+    }
   }
 }

@@ -23,7 +23,8 @@ public class MatchRepository {
       int totalTurns,
       int xpGained) throws SQLException {
     String sql = """
-          SET ended_at = CURRENT_TIMESTAP,
+          UPDATE matches
+          SET ended_at = CURRENT_TIMESTAMP,
             result = ?,
             total_turns = ?,
             xp_gained = ?
