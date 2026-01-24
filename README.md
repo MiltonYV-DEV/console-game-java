@@ -9,20 +9,16 @@ mvn exec:java -Dexec.mainClass="vyom.dunk.app.App"
 # Comando windows
 
 ```bash
+mvn test
 mvn exec:java "-Dexec.mainClass=vyom.dunk.app.App"
 ```
 
 # Comando windows para activar venv
-
+entra a la carpeta py/ y ejecuta el siguiente comando
 ```bash
 .\.venv\Scripts\Activate.ps1
 ```
-
-```
-
-```
-
-# Comando python
+luego corres el backend con el siguiente comando
 
 ```bash
 uvicorn app.main:app --reload --port 8000
