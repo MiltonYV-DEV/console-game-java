@@ -3,12 +3,11 @@ package vyom.dunk.app.repositories;
 import java.io.OptionalDataException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.ResultSet; // resultSet es lo que te va devolver la base
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
-import vyom.dunk.app.config.Database;
 import vyom.dunk.app.resources.UserAuthData;
 
 public class UserRepository {
@@ -18,6 +17,7 @@ public class UserRepository {
 
     try (PreparedStatement ps = conn.prepareStatement(sql)) {
       ps.setString(1, username);
+
       try (ResultSet rs = ps.executeQuery()) {
         return rs.next();
       }
@@ -32,9 +32,10 @@ public class UserRepository {
       ps.setString(2, passwordHash);
       ps.executeUpdate();
 
-      try (ResultSet rs = ps.getGeneratedKeys()) {
-        if (!rs.next())
+      try (ResultSet rs = ps.getGeneratedKeys()) { // 1, 2, 3, 4
+        if (!rs.next()) // si la primary key no existe
           throw new SQLException("No se pudo obtener user_id");
+
         return rs.getLong(1);
       }
     }
@@ -45,6 +46,7 @@ public class UserRepository {
 
     try (PreparedStatement ps = conn.prepareStatement(sql)) {
       ps.setString(1, username);
+
       try (ResultSet rs = ps.executeQuery()) {
         if (!rs.next())
           return Optional.empty();
@@ -56,5 +58,4 @@ public class UserRepository {
       }
     }
   }
-
 }

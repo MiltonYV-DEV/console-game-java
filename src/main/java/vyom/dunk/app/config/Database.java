@@ -5,9 +5,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
-  // private final String URL = "jdbc:mysql://localhost:3000/poo_pf";
-  // private final String USER = "root";
-  // private final String PASS = "12345";
 
   private final String url;
   private final String user;
@@ -20,7 +17,15 @@ public class Database {
   }
 
   public Connection getConnection() throws SQLException {
-    Connection con = DriverManager.getConnection(url, user, pass);
-    return con;
+    Connection conn = DriverManager.getConnection(url, user, pass);
+    return conn;
   }
+
+  // public String holaMundp(String palabra) throw IllegalArgumentException {
+  //
+  // if (palabra != "hola") {
+  // // Crea un error
+  // throw new IllegalArgumentException("El string recibido no es hola");
+  // }
+  // }
 }

@@ -13,15 +13,11 @@ public class TypingText {
           e.printStackTrace();
         }
       }
-      // System.out.println();
 
     }
-    // System.out.println();
   }
 
   public static void printText(String[] elements) {
-    // String[] elements = { "YO SOY TITULO", "yo soy parrafo" };
-    // long speed = 50;
 
     slowPrint(elements, 25);
   }

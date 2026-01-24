@@ -4,18 +4,12 @@ import java.util.Scanner;
 
 import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
 
-import java.awt.Transparency;
 import java.io.Console;
-import java.lang.ProcessBuilder.Redirect;
-import java.sql.Connection;
 
 import vyom.dunk.app.clients.EnemyMicroserviceClient;
 import vyom.dunk.app.game.BattleEngine;
-import vyom.dunk.app.resources.CombatStats;
-import vyom.dunk.app.resources.EnemyPayload;
 import vyom.dunk.app.resources.LoginDTO;
 import vyom.dunk.app.resources.LoginResponseDTO;
-import vyom.dunk.app.resources.MatchFinishDTO;
 import vyom.dunk.app.resources.ProfileDTO;
 import vyom.dunk.app.resources.RegisterDTO;
 import vyom.dunk.app.resources.RegisterResponseDTO;
@@ -102,7 +96,7 @@ public class Ui {
       username = res.username();
       userId = res.userId();
       String[] elementLoginUser = { "Bienvenid@ aventurer@ " + res.username() + "\n",
-          "Que cada una de tus batallas sea legendaria!\n" };
+          "Que cada una de tus batallas sea legendaria!\n\n" };
 
       clearScreen();
       TypingText.printText(elementLoginUser);
@@ -208,7 +202,7 @@ public class Ui {
 
       String prompt = sc.nextLine().trim();
 
-      String[] loading = { "\nLOADING...\n", "Tu enememigo se esta creado..." };
+      String[] loading = { "\nLOADING...\n", "Tu enememigo se esta creado...\n" };
       TypingText.printText(loading);
 
       gameService.playMatch(userId, prompt, sc);

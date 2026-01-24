@@ -84,7 +84,7 @@ public class BattleEngine {
 
     String[] resultFight = {
         "\nRESULTADO" + "\n",
-        "| Turnos: " + turns + " | Daño hecho: " + damageDealt + " | Daño recibido: " + damageTaken + "\n\n"
+        result + " | Turnos: " + turns + " | Daño hecho: " + damageDealt + " | Daño recibido: " + damageTaken + "\n\n"
     };
 
     TypingText.printText(resultFight);

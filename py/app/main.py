@@ -92,7 +92,7 @@ def generate_enemy(req: GenerateEnemyRequest):
           "role": "user",
           "content": (
             f'Generar enemigo con las indicaciones que el usuario envio: {req.prompt_user}.'
-            f"Rango del dano: [{req.min_damage}, {req.max_damage}]."
+            f"Rango del dano: [{30}, {45}]."
             "La descripcion de enemigo generado tiene que ser una narracion de como entra en combate con alguna de sus frases mas conocidas y un poco gracioso"
             "Retorna SOLO el JSON exacto del schema."
             "Ataques enemigos: exactamente 3, solo dano."

@@ -14,8 +14,8 @@ class EnemyInfo(BaseModel):
 
 class GenerateEnemyRequest(BaseModel):
   prompt_user: str = Field(..., min_length=1, max_length=120)
-  min_damage: int = Field(10, ge=2, le=999)
-  max_damage: int = Field(25, ge=2, le=999)
+  min_damage: int = Field(30, ge=2, le=999)
+  max_damage: int = Field(45, ge=2, le=999)
   force_super_strongest: bool = True
 
 class EnemyPayload(BaseModel):

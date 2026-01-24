@@ -79,7 +79,7 @@ public class UserService {
     String username = req.username();
 
     try (Connection conn = db.getConnection()) {
-      UserAuthData user = userRepo.selectAuthByUsername(conn, username)
+      UserAuthData user = userRepo.selectAuthByUsername(conn, username) // id, username, passwordHash
           .orElseThrow(() -> new IllegalArgumentException("Credenciales inválidas"));
 
       if (!Password.checkPassword(req.password(), user.passwordHash()))

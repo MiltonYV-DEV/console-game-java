@@ -46,7 +46,7 @@ public class GameService {
       boolean old = conn.getAutoCommit();
       conn.setAutoCommit(false);
 
-      long matchId = -1;
+      long matchId;
 
       try {
         matchId = matchRepo.createMatch(conn, userId);
@@ -57,6 +57,10 @@ public class GameService {
         CombatStats playerStats = new CombatStats(profile.hp(), profile.attack(), profile.attack());
 
         String enemyJson = enemyClient.generateEnemyJson(promptUserText);
+
+        String[] enemyCreated = { "Estas listo? tu enemigo fue creado... muajajaja\n" };
+        TypingText.printText(enemyCreated);
+
         EnemyPayload payload = JsonUtil.parseEnemyPayload(enemyJson);
 
         CombatStats enemyStats = statBalancer.enemyFromPlayer(playerStats);
@@ -67,6 +71,8 @@ public class GameService {
 
         BattleResultDTO battleResult = battleEngine.fight(sc, playerStats, enemyStats, payload);
 
+        matchRepo.finishMatch(conn, matchId, battleResult.result(), battleResult.turns(), battleResult.xpGained());
+
         battleRepo.insertAI(conn, matchId, generatedEnemyId,
             battleResult.result(),
             battleResult.turns(),
@@ -74,8 +80,9 @@ public class GameService {
             battleResult.damageTaken());
 
         conn.commit();
-        String[] saveBattle = { "Partida guardada (match + generated_enemy + battle). matchId=" + matchId + "\n" };
+        String[] saveBattle = { "Partida guardada (match + generated_enemy + battle). matchId=" + matchId + "\n\n" };
         TypingText.printText(saveBattle);
+
       } catch (Exception e) {
         conn.rollback();
 
