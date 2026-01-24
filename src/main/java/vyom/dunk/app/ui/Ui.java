@@ -7,7 +7,6 @@ import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
 import java.io.Console;
 
 import vyom.dunk.app.clients.EnemyMicroserviceClient;
-import vyom.dunk.app.game.BattleEngine;
 import vyom.dunk.app.resources.LoginDTO;
 import vyom.dunk.app.resources.LoginResponseDTO;
 import vyom.dunk.app.resources.ProfileDTO;
@@ -16,32 +15,26 @@ import vyom.dunk.app.resources.RegisterResponseDTO;
 import vyom.dunk.app.services.GameService;
 import vyom.dunk.app.services.HistoryService;
 import vyom.dunk.app.services.MatchService;
-import vyom.dunk.app.services.StatBalancer;
+import vyom.dunk.app.services.RankingService;
 import vyom.dunk.app.services.UserService;
 import vyom.dunk.app.utils.TypingText;
 
 public class Ui {
-  private boolean isLoggin = false;
-  private String username;
   private final UserService userService;
-  private final MatchService matchService;
-  private final StatBalancer statBalancer = new StatBalancer();
-  private final BattleEngine battleEngine = new BattleEngine();
   private final GameService gameService;
   private final HistoryService historyService;
-  private final EnemyMicroserviceClient enemyClient;
+  private final RankingService rankingService;
   long userId;
 
   static final Scanner sc = new Scanner(System.in);
   Console console = System.console();
 
   public Ui(UserService userService, MatchService matchService, GameService gameService,
-      HistoryService historyService, EnemyMicroserviceClient enemyClient) {
+      HistoryService historyService, EnemyMicroserviceClient enemyClient, RankingService rankingService) {
     this.userService = userService;
-    this.matchService = matchService;
     this.gameService = gameService;
     this.historyService = historyService;
-    this.enemyClient = enemyClient;
+    this.rankingService = rankingService;
   }
 
   public static void render() {
@@ -54,7 +47,7 @@ public class Ui {
       render();
       String[] homeElements = { "BIENVENIDO A YOUBATTLE\n", "Version beta 0.5\n\n", "1)Iniciar sesion\n",
           "2)Registrarse\n",
-          "3)Crear usuarios ranking(test db)\n", "5)Idioma\n", "6)Salir\n" };
+          "3)Ver ranking mundial\n", "4)Creditos\n", "5)Salir\n" };
 
       TypingText.printText(homeElements);
 
@@ -63,10 +56,9 @@ public class Ui {
       switch (opt) {
         case "1" -> login();
         case "2" -> register();
-        case "3" -> System.out.println("No hay mas idiomas disponibles XD");
-        case "4" -> System.out.println("No hay mas idiomas disponibles XD");
-        case "5" -> System.out.println("No hay mas idiomas disponibles XD");
-        case "6" -> {
+        case "3" -> showRanking();
+        case "4" -> showCredits();
+        case "5" -> {
           System.out.println("Saliendo...");
           sc.close();
           shutdownMySqlCleanup();
@@ -149,7 +141,8 @@ public class Ui {
     while (true) {
       clearScreen();
 
-      String[] menu2Elements = { "1)Iniciar partida\n", "2)Ver perfil\n", "3)Ver ultimas partidas\n",
+      String[] menu2Elements = { "MENU - INICIO DE PARTIDA\n\n", "1)Iniciar partida\n", "2)Ver perfil\n",
+          "3)Ver ultimas partidas\n",
           "4)Volver al menu principal\n" };
       TypingText.printText(menu2Elements);
 
@@ -223,10 +216,12 @@ public class Ui {
       String[] viewHistorytitle = { "HISTORIAL" + "(últimas 5)" + "\n",
           "---------------------------------\n",
       };
-      TypingText.printText(viewHistorytitle);
+      TypingText.printText(viewHistorytitle, 10);
 
       if (list.isEmpty()) {
         String[] viewHisoryEmpty = { "No tienes partidas registradas." + "\n" };
+        TypingText.printText(viewHisoryEmpty);
+        readContinue();
         return;
       }
 
@@ -242,13 +237,52 @@ public class Ui {
             "---------------------------------\n"
         };
 
-        TypingText.printText(historyList);
+        TypingText.printText(historyList, 10);
       }
     } catch (Exception e) {
-      String[] errorViewHistory = { "Error mostando historial: " + e.getMessage() };
+      String[] errorViewHistory = { "Error mostando historial: " + e.getMessage() + "\n" };
       TypingText.printText(errorViewHistory);
     }
 
+    readContinue();
+  }
+
+  private void showRanking() {
+    clearScreen();
+    try {
+      var list = rankingService.topWins(10);
+
+      String[] titleShowRanking = { "RANKING (TOP 10)\n\n" };
+      TypingText.printText(titleShowRanking);
+
+      if (list.isEmpty()) {
+        String[] arrIsEmpty = { "No hay datos aun" };
+        TypingText.printText(arrIsEmpty);
+        readContinue();
+        return;
+      }
+
+      int pos = 1;
+      for (var r : list) {
+        String[] rankingElement = { "" + pos + ") " + r.username() + " | wins=" + r.wins() + " | loses=" + r.loses()
+            + " | peleas=" + r.totalMatches() + "\n" };
+
+        TypingText.printText(rankingElement, 10);
+        pos++;
+      }
+    } catch (Exception e) {
+      String[] errorShowRanking = { "Error: " + e.getMessage() + "\n" };
+      TypingText.printText(errorShowRanking);
+    }
+
+    readContinue();
+  }
+
+  private void showCredits() {
+    clearScreen();
+    String[] creditsElements = { "CREDITOS\n\n", "Maria Melissa Cueva Bueno\n", "Rodrigo\n", "Alfredo Yamujar Rubio\n",
+        "Milton Omar Ytusaca Vilca\n\n", "VALAR MORGULIS...\n" };
+    TypingText.printText(creditsElements, 50);
     readContinue();
   }
 

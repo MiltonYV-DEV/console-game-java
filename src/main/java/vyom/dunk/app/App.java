@@ -9,10 +9,12 @@ import vyom.dunk.app.repositories.CharacterRepository;
 import vyom.dunk.app.repositories.GeneratedEnemyRepository;
 import vyom.dunk.app.repositories.HistoryRepository;
 import vyom.dunk.app.repositories.MatchRepository;
+import vyom.dunk.app.repositories.RankingRepository;
 import vyom.dunk.app.repositories.UserRepository;
 import vyom.dunk.app.services.GameService;
 import vyom.dunk.app.services.HistoryService;
 import vyom.dunk.app.services.MatchService;
+import vyom.dunk.app.services.RankingService;
 import vyom.dunk.app.services.UserService;
 import vyom.dunk.app.ui.Ui;
 
@@ -29,6 +31,7 @@ public class App {
     CharacterRepository characterRepo = new CharacterRepository();
     HistoryRepository historyRepo = new HistoryRepository();
     MatchRepository matchRepo = new MatchRepository();
+    RankingRepository rankingRepo = new RankingRepository();
 
     EnemyMicroserviceClient enemyClient = new EnemyMicroserviceClient(baseUrl);
 
@@ -36,8 +39,9 @@ public class App {
     MatchService matchService = new MatchService(db, matchRepo);
     GameService gameService = new GameService(db, matchRepo, genRepo, battleRepo, characterRepo, enemyClient);
     HistoryService historyService = new HistoryService(db, historyRepo);
+    RankingService rankingService = new RankingService(db, rankingRepo);
 
-    Ui ui = new Ui(userService, matchService, gameService, historyService, enemyClient);
+    Ui ui = new Ui(userService, matchService, gameService, historyService, enemyClient, rankingService);
 
     ui.home();
   }

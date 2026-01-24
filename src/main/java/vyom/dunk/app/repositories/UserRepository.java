@@ -1,9 +1,8 @@
 package vyom.dunk.app.repositories;
 
-import java.io.OptionalDataException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet; // resultSet es lo que te va devolver la base
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;

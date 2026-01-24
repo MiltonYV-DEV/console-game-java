@@ -1,12 +1,9 @@
 package vyom.dunk.app.game;
 
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
-import vyom.dunk.app.models.Enemy;
-import vyom.dunk.app.models.Player;
 import vyom.dunk.app.resources.BattleResultDTO;
 import vyom.dunk.app.resources.CombatStats;
 import vyom.dunk.app.resources.EnemyPayload;

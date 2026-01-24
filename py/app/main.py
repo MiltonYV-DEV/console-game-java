@@ -17,8 +17,8 @@ SYSTEM_RULES = (
   "Eres generador de un enemigo parodiado con temas controversiales que haya tenido, es para un minijuego por turno "
   "El tono es parodia ,gracioso y de tono familiar"
   "Todos los ataques tiene que ser solo daño, nada de efectos de stun, buffs o curacion etc."
-  "Los ataques del enemigo deben ser relacionados con su vida y pueden ser frases, momentos, situaciones etc, tiene que ser algo graciosos"
-  "los ataques del jugador tienen que ser momentos, situaciones graciosos del enemigo"
+  "Los ataques del enemigo deben ser relacionados con su vida y pueden ser frases, momentos, situaciones etc."
+  "los ataques del jugador tienen que ser tambien relacionados sobre el enmeigo situaciones vergonzosas y cosas asi"
   "Retornaras el contenido en solamente en español, pero las llaves JSON en ingles"
 )
 
@@ -92,8 +92,8 @@ def generate_enemy(req: GenerateEnemyRequest):
           "role": "user",
           "content": (
             f'Generar enemigo con las indicaciones que el usuario envio: {req.prompt_user}.'
-            f"Rango del dano: [{30}, {45}]."
-            "La descripcion de enemigo generado tiene que ser una narracion de como entra en combate con alguna de sus frases mas conocidas y un poco gracioso"
+            f"Rango del dano: [{25}, {45}]."
+            "La descripcion de enemigo generado tiene que ser una narracion de como entra en combate con alguna de sus frases mas conocidas"
             "Retorna SOLO el JSON exacto del schema."
             "Ataques enemigos: exactamente 3, solo dano."
             "Ataques del jugador: exacamente 3, solo dano."

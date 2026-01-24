@@ -21,4 +21,8 @@ public class TypingText {
 
     slowPrint(elements, 25);
   }
+
+  public static void printText(String[] elements, int speed) {
+    slowPrint(elements, speed);
+  }
 }
