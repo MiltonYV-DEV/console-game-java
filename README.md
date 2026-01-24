@@ -7,13 +7,14 @@ mvn exec:java -Dexec.mainClass="vyom.dunk.app.App"
 ```
 
 # Comando windows
-
+primera terminal:
 ```bash
 mvn test
 mvn exec:java "-Dexec.mainClass=vyom.dunk.app.App"
 ```
 
 # Comando windows para activar venv
+Segunda temrinal:
 entra a la carpeta py/ y ejecuta el siguiente comando
 ```bash
 .\.venv\Scripts\Activate.ps1
