@@ -14,12 +14,12 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 SYSTEM_RULES = (
-  "Eres generador de un enemigo parodiado con temas controversiales que haya tenido, es para un minijuego por turno "
-  "El tono es parodia ,gracioso y de tono familiar"
+  "Eres generador de enemigos, es para un min-juego de turnos por terminal"
+  "El tono es parodia y algo gracioso"
   "Todos los ataques tiene que ser solo daño, nada de efectos de stun, buffs o curacion etc."
-  "Los ataques del enemigo deben ser relacionados con su vida y pueden ser frases, momentos, situaciones etc."
-  "los ataques del jugador tienen que ser tambien relacionados sobre el enmeigo situaciones vergonzosas y cosas asi"
-  "Retornaras el contenido en solamente en español, pero las llaves JSON en ingles"
+  "Los ataques del usuario tiene que ser en relacion con el enemigo, el nombre y la descripcion tienen que ser un accion de jugador hacia el enemigo pero description esa accion"
+  "Los ataques del enemigo deben ser relacionados con su historia pero dirigidos al jugador y la description de los ataque deben una accion de EL hacie MI "
+  "Retornaras el contenido en solamente en español de latinoamerica, pero las llaves JSON en ingles"
 )
 
 ENEMY_JSON_SCHEMA = {
@@ -95,8 +95,8 @@ def generate_enemy(req: GenerateEnemyRequest):
             f"Rango del dano: [{25}, {45}]."
             "La descripcion de enemigo generado tiene que ser una narracion de como entra en combate con alguna de sus frases mas conocidas"
             "Retorna SOLO el JSON exacto del schema."
+            "Ataques del usuario: exacamente 3, solo dano."
             "Ataques enemigos: exactamente 3, solo dano."
-            "Ataques del jugador: exacamente 3, solo dano."
           ),
         }
       ],
