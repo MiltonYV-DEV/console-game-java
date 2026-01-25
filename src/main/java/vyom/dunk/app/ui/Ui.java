@@ -280,8 +280,9 @@ public class Ui {
 
   private void showCredits() {
     clearScreen();
-    String[] creditsElements = { "CREDITOS\n\n", "Maria Melissa Cueva Bueno\n", "Rodrigo\n", "Alfredo Yamujar Rubio\n",
-        "Milton Omar Ytusaca Vilca\n\n", "VALAR MORGULIS...\n" };
+    String[] creditsElements = { "CREDITOS\n\n", "Maria Melissa Cueva Bueno\n", "Rodrigo Fred Aguilar Merma\n",
+        "Alfredo Benito Yamujar Rubio\n",
+        "Milton Omar Ytusaca Vilca\n\n" };
     TypingText.printText(creditsElements, 50);
     readContinue();
   }

@@ -57,6 +57,8 @@ public class BattleEngine {
 
       TypingText.printText(playerChoice);
 
+      Ui.readContinue();
+
       if (enemyHp <= 0)
         break;
 
@@ -67,8 +69,8 @@ public class BattleEngine {
       damageTaken += taken;
 
       String[] enemyChoice = {
-          "El enemigo usa: " + enemyAtk.name() + " -> daño " + taken + "\n",
-          enemyAtk.description() + "\n" };
+          "\nEl enemigo usa: " + enemyAtk.name() + " -> daño " + taken + "\n",
+          enemyAtk.description() + "\n\n" };
 
       TypingText.printText(enemyChoice);
 
