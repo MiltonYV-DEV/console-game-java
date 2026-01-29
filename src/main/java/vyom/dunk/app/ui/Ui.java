@@ -45,9 +45,9 @@ public class Ui {
 
     while (true) {
       render();
-      String[] homeElements = { "BIENVENIDO A YOUBATTLE\n", "Version beta 0.5\n\n", "1)Iniciar sesion\n",
+      String[] homeElements = { "BIENVENIDO A YOUBATTLE\n", "Version beta 0.5\n\n", "1)Iniciar sesión\n",
           "2)Registrarse\n",
-          "3)Ver ranking mundial\n", "4)Creditos\n", "5)Salir\n" };
+          "3)Ver ranking mundial\n", "4)Créditos\n", "5)Salir\n" };
 
       TypingText.printText(homeElements);
 
@@ -71,13 +71,13 @@ public class Ui {
 
   public void login() {
     clearScreen();
-    String[] elementsLogin = { "LOGIN\n", "Ingrese su username: " };
+    String[] elementsLogin = { "LOGIN\n\n", "Ingrese su username: " };
 
     TypingText.printText(elementsLogin);
 
     String username = sc.nextLine().trim();
 
-    String[] elementsLoginPass = { "Ingrese contrasena: " };
+    String[] elementsLoginPass = { "Ingrese contraseña: " };
     TypingText.printText(elementsLoginPass);
     char[] passwordChars = console.readPassword();
     String passwordString = new String(passwordChars);
@@ -105,7 +105,7 @@ public class Ui {
   public void register() {
     clearScreen();
 
-    String[] registerElementNick = { "BIENVENIDO AL REGISTRO\n", "Ingrese su nickname: " };
+    String[] registerElementNick = { "BIENVENIDO AL REGISTRO\n", "Ingrese su username: " };
     TypingText.printText(registerElementNick);
     String username = console.readLine();
 
@@ -142,7 +142,7 @@ public class Ui {
       clearScreen();
 
       String[] menu2Elements = { "MENU - INICIO DE PARTIDA\n\n", "1)Iniciar partida\n", "2)Ver perfil\n",
-          "3)Ver ultimas partidas\n",
+          "3)Ver últimas partidas\n",
           "4)Volver al menu principal\n" };
       TypingText.printText(menu2Elements);
 
@@ -167,8 +167,8 @@ public class Ui {
       ProfileDTO p = userService.getProfile(userId);
 
       String[] userProfileElements = {
-          "PERFIL\n",
-          "Usuario: " + p.username() + " (ID: " + p.userId() + ")" + "\n",
+          "PERFIL\n\n",
+          "Username: " + p.username() + " (ID: " + p.userId() + ")" + "\n",
           "Personaje: " + p.characterName() + " (ID: " + p.characterId() + ")" + "\n",
           "Nivel: " + p.level() + "\n",
           "HP: " + p.hp() + "\n",
@@ -240,7 +240,7 @@ public class Ui {
         TypingText.printText(historyList, 10);
       }
     } catch (Exception e) {
-      String[] errorViewHistory = { "Error mostando historial: " + e.getMessage() + "\n" };
+      String[] errorViewHistory = { "Error mostrando historial: " + e.getMessage() + "\n" };
       TypingText.printText(errorViewHistory);
     }
 
@@ -256,7 +256,7 @@ public class Ui {
       TypingText.printText(titleShowRanking);
 
       if (list.isEmpty()) {
-        String[] arrIsEmpty = { "No hay datos aun" };
+        String[] arrIsEmpty = { "No hay datos aún" };
         TypingText.printText(arrIsEmpty);
         readContinue();
         return;
@@ -280,7 +280,7 @@ public class Ui {
 
   private void showCredits() {
     clearScreen();
-    String[] creditsElements = { "CREDITOS\n\n", "Maria Melissa Cueva Bueno\n", "Rodrigo Fred Aguilar Merma\n",
+    String[] creditsElements = { "CRÉDITOS\n\n", "Maria Melissa Cueva Bueno\n", "Rodrigo Fred Aguilar Merma\n",
         "Alfredo Benito Yamujar Rubio\n",
         "Milton Omar Ytusaca Vilca\n\n" };
     TypingText.printText(creditsElements, 50);
